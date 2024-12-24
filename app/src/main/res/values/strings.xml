@@ -4,4 +4,7 @@
     <string name="min_value_text">1</string>
     <string name="max_value_text">100</string>
     <string name="hit_me">HIT ME</string>
+    <string name="result_dialog_button_text">Awesome!</string>
+    <string name="result_dialog_title">Hello there!</string>
+    <string name="result_dialog_message">This is my first pop up.</string>
 </resources>
