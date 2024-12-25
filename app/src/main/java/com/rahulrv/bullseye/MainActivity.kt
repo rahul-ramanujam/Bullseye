@@ -17,8 +17,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,8 +47,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun GameScreen() {
-    var alertIsVisible by remember { mutableStateOf(false) }
-    var sliderValue by remember { mutableStateOf(0.5f) }
+    var alertIsVisible by rememberSaveable { mutableStateOf(false) }
+    var sliderValue by rememberSaveable { mutableFloatStateOf(0.5f) }
+
+    val sliderToInt = (sliderValue * 100).toInt()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -61,9 +65,8 @@ fun GameScreen() {
             verticalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier.weight(9f)
         ) {
-            Text(text = stringResource(R.string.instruction_text))
-            Text(text = "89", fontSize = 32.sp, fontWeight = FontWeight.Bold)
 
+            GamePrompt(sliderToInt)
             TargetSlider(
                 value = sliderValue,
                 valueChanged = { value ->
@@ -83,7 +86,8 @@ fun GameScreen() {
             ResultDialog(
                 hideDialog = {
                     alertIsVisible = false
-                }
+                },
+                sliderValue = sliderToInt
             )
         }
 
