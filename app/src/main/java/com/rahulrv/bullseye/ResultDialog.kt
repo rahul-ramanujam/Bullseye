@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 fun ResultDialog(
     hideDialog: () -> Unit,
     sliderValue:Int,
+    points:Int,
     modifier: Modifier = Modifier
 ) {
     AlertDialog(
@@ -31,6 +32,6 @@ fun ResultDialog(
             }
         },
         title = { Text(stringResource(id = R.string.result_dialog_title)) },
-        text = { Text(stringResource(id = R.string.result_dialog_message, sliderValue)) }
+        text = { Text(stringResource(id = R.string.result_dialog_message, sliderValue, points)) }
     )
 }

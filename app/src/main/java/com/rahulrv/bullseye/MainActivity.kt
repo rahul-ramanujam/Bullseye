@@ -31,6 +31,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rahulrv.bullseye.ui.theme.BullseyeTheme
+import kotlin.math.abs
+import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,8 +51,15 @@ class MainActivity : ComponentActivity() {
 fun GameScreen() {
     var alertIsVisible by rememberSaveable { mutableStateOf(false) }
     var sliderValue by rememberSaveable { mutableFloatStateOf(0.5f) }
+    var targetValue by rememberSaveable { mutableStateOf(Random.nextInt(1, 100)) }
 
     val sliderToInt = (sliderValue * 100).toInt()
+
+    fun pointsToCurrentRound(): Int{
+        val maxScore = 100
+        val diff = abs(sliderToInt - targetValue)
+        return maxScore - diff
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -66,7 +75,7 @@ fun GameScreen() {
             modifier = Modifier.weight(9f)
         ) {
 
-            GamePrompt(sliderToInt)
+            GamePrompt(targetValue)
             TargetSlider(
                 value = sliderValue,
                 valueChanged = { value ->
@@ -87,7 +96,8 @@ fun GameScreen() {
                 hideDialog = {
                     alertIsVisible = false
                 },
-                sliderValue = sliderToInt
+                sliderValue = sliderToInt,
+                points = pointsToCurrentRound(),
             )
         }
 
