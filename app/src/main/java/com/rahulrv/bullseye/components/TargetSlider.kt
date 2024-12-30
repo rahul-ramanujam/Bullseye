@@ -1,4 +1,4 @@
-package com.rahulrv.bullseye
+package com.rahulrv.bullseye.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.rahulrv.bullseye.R
 
 /**
  * Created by  rahulramanujam On 12/24/24
