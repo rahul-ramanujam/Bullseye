@@ -17,18 +17,19 @@ import com.rahulrv.bullseye.R
 @Composable
 fun GameDetail(
     modifier: Modifier = Modifier,
-    totalScore:Int = 0,
-    round:Int = 1,
+    totalScore: Int = 0,
+    round: Int = 1,
+    onStartOver: () -> Unit,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly,
         modifier = modifier
     ) {
-        Button(onClick = {}) {
+        Button(onClick = { onStartOver() }) {
             Text(text = stringResource(id = R.string.start_over))
         }
-        GameInfo(label = stringResource(R.string.Score_label), value =  totalScore)
+        GameInfo(label = stringResource(R.string.Score_label), value = totalScore)
         GameInfo(label = stringResource(R.string.current_round_label), value = round)
         Button(onClick = {}) {
             Text(text = stringResource(id = R.string.info))
@@ -38,8 +39,8 @@ fun GameDetail(
 
 @Composable
 fun GameInfo(
-    label:String,
-    value:Int = 0
+    label: String,
+    value: Int = 0
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -53,5 +54,5 @@ fun GameInfo(
 @Preview(showBackground = true)
 @Composable
 fun GameDetailPreview() {
-    GameDetail()
+    GameDetail(onStartOver = {})
 }

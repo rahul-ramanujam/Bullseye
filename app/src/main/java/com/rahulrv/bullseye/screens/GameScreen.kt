@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.currentRecomposeScope
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -34,16 +33,17 @@ import kotlin.random.Random
 
 @Composable
 fun GameScreen() {
+    fun newTargetValue() = Random.nextInt(1, 100)
     var alertIsVisible by rememberSaveable { mutableStateOf(false) }
     var sliderValue by rememberSaveable { mutableFloatStateOf(0.5f) }
-    var targetValue by rememberSaveable { mutableStateOf(Random.nextInt(1, 100)) }
+    var targetValue by rememberSaveable { mutableIntStateOf(newTargetValue()) }
 
     val sliderToInt = (sliderValue * 100).toInt()
 
     var totalScore by rememberSaveable { mutableIntStateOf(0) }
     var currentRound by rememberSaveable { mutableIntStateOf(1) }
 
-    fun differnceAmount() = abs(targetValue - sliderToInt)
+    fun differenceAmount() = abs(targetValue - sliderToInt)
 
     fun Int.bonusPoints(): Int {
         return when {
@@ -55,19 +55,26 @@ fun GameScreen() {
 
     fun pointsToCurrentRound(): Int {
         val maxScore = 100
-        val diff = differnceAmount()
+        val diff = differenceAmount()
         val currScore = maxScore - diff
         return currScore + diff.bonusPoints()
     }
 
     fun alertTitle(): Int {
-        val difference = differnceAmount()
+        val difference = differenceAmount()
         return when {
             difference == 0 -> R.string.alert_title_1
             difference < 5 -> R.string.alert_title_2
             difference <= 10 -> R.string.alert_title_3
             else -> R.string.alert_title_4
         }
+    }
+
+    fun startNewGame() {
+        totalScore = 0
+        currentRound = 1
+        sliderValue = 0.5f
+        targetValue = newTargetValue()
     }
 
     Column(
@@ -101,7 +108,8 @@ fun GameScreen() {
             GameDetail(
                 round = currentRound,
                 totalScore = totalScore,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                onStartOver = { startNewGame() }
             )
         }
         Spacer(modifier = Modifier.weight(0.5f))
