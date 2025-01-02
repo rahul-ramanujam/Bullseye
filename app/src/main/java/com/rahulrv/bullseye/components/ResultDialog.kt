@@ -14,6 +14,7 @@ import com.rahulrv.bullseye.R
  */
 @Composable
 fun ResultDialog(
+    dialogTitle: Int,
     hideDialog: () -> Unit,
     onRoundIncrement: () -> Unit,
     sliderValue:Int,
@@ -35,7 +36,7 @@ fun ResultDialog(
                 Text(stringResource(id = R.string.result_dialog_button_text))
             }
         },
-        title = { Text(stringResource(id = R.string.result_dialog_title)) },
+        title = { Text(stringResource(id = dialogTitle)) },
         text = { Text(stringResource(id = R.string.result_dialog_message, sliderValue, points)) }
     )
 }

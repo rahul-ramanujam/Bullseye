@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentRecomposeScope
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -42,10 +43,31 @@ fun GameScreen() {
     var totalScore by rememberSaveable { mutableIntStateOf(0) }
     var currentRound by rememberSaveable { mutableIntStateOf(1) }
 
-    fun pointsToCurrentRound(): Int{
+    fun differnceAmount() = abs(targetValue - sliderToInt)
+
+    fun Int.bonusPoints(): Int {
+        return when {
+            this == 0 -> 100
+            this == 1 -> 50
+            else -> 0
+        }
+    }
+
+    fun pointsToCurrentRound(): Int {
         val maxScore = 100
-        val diff = abs(sliderToInt - targetValue)
-        return maxScore - diff
+        val diff = differnceAmount()
+        val currScore = maxScore - diff
+        return currScore + diff.bonusPoints()
+    }
+
+    fun alertTitle(): Int {
+        val difference = differnceAmount()
+        return when {
+            difference == 0 -> R.string.alert_title_1
+            difference < 5 -> R.string.alert_title_2
+            difference <= 10 -> R.string.alert_title_3
+            else -> R.string.alert_title_4
+        }
     }
 
     Column(
@@ -86,6 +108,7 @@ fun GameScreen() {
 
         if (alertIsVisible) {
             ResultDialog(
+                dialogTitle = alertTitle(),
                 hideDialog = {
                     alertIsVisible = false
                 },
