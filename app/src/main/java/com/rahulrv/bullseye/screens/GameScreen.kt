@@ -1,6 +1,8 @@
 package com.rahulrv.bullseye.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +21,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -79,63 +83,71 @@ fun GameScreen() {
         targetValue = newTargetValue()
     }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Spacer(modifier = Modifier.weight(0.5f))
+    Box {
+        Image(
+            modifier = Modifier.fillMaxSize(),
+            painter = painterResource(id = R.drawable.background),
+            contentScale = ContentScale.Crop,
+            contentDescription = stringResource(R.string.background_image)
+        )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.weight(9f)
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
         ) {
+            Spacer(modifier = Modifier.weight(0.5f))
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier.weight(9f)
+            ) {
 
-            GamePrompt(targetValue)
-            TargetSlider(
-                value = sliderValue,
-                valueChanged = { value ->
-                    sliderValue = value
+                GamePrompt(targetValue)
+                TargetSlider(
+                    value = sliderValue,
+                    valueChanged = { value ->
+                        sliderValue = value
+                    }
+                )
+
+                Button(
+                    onClick = {
+                        alertIsVisible = true
+                        totalScore += pointsToCurrentRound()
+                    },
+                    shape = MaterialTheme.shapes.medium,
+                    contentPadding = PaddingValues(16.dp)
+                )
+                {
+                    Text(text = stringResource(R.string.hit_me))
                 }
-            )
-
-            Button(
-                onClick = {
-                    alertIsVisible = true
-                    totalScore += pointsToCurrentRound()
-                },
-                shape = MaterialTheme.shapes.medium,
-                contentPadding = PaddingValues(16.dp)
-            )
-            {
-                Text(text = stringResource(R.string.hit_me))
+                GameDetail(
+                    round = currentRound,
+                    totalScore = totalScore,
+                    modifier = Modifier.fillMaxWidth(),
+                    onStartOver = { startNewGame() }
+                )
             }
-            GameDetail(
-                round = currentRound,
-                totalScore = totalScore,
-                modifier = Modifier.fillMaxWidth(),
-                onStartOver = { startNewGame() }
-            )
-        }
-        Spacer(modifier = Modifier.weight(0.5f))
+            Spacer(modifier = Modifier.weight(0.5f))
 
-        if (alertIsVisible) {
-            ResultDialog(
-                dialogTitle = alertTitle(),
-                hideDialog = {
-                    alertIsVisible = false
-                },
-                onRoundIncrement = {
-                    currentRound += 1
-                    targetValue = Random.nextInt(1, 100)
-                },
-                sliderValue = sliderToInt,
-                points = pointsToCurrentRound(),
-            )
-        }
+            if (alertIsVisible) {
+                ResultDialog(
+                    dialogTitle = alertTitle(),
+                    hideDialog = {
+                        alertIsVisible = false
+                    },
+                    onRoundIncrement = {
+                        currentRound += 1
+                        targetValue = Random.nextInt(1, 100)
+                    },
+                    sliderValue = sliderToInt,
+                    points = pointsToCurrentRound(),
+                )
+            }
 
+        }
     }
 }
 
