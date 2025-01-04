@@ -38,7 +38,11 @@ fun MainScreen() {
             )
         }
         composable("about") {
-            AboutScreen()
+            AboutScreen(
+                onBackPressed = {
+                    navController.navigateUp()
+                }
+            )
         }
     }
 }

@@ -33,13 +33,17 @@ import com.rahulrv.bullseye.R
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AboutScreen() {
+fun AboutScreen(
+    onBackPressed: () -> Unit
+) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(id = R.string.about_page_title)) },
                 navigationIcon = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {
+                        onBackPressed()
+                    }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = stringResource(id = R.string.back_button_text)
@@ -74,7 +78,7 @@ fun AboutScreen() {
             )
             Button(
                 onClick = {
-
+                    onBackPressed()
                 },
                 shape = MaterialTheme.shapes.medium
             ) {
@@ -89,5 +93,7 @@ fun AboutScreen() {
 @Preview(showBackground = true, device = Devices.AUTOMOTIVE_1024p, widthDp = 864, heightDp = 432)
 @Composable
 fun AboutScreenPreview() {
-    AboutScreen()
+    AboutScreen(
+        onBackPressed = {}
+    )
 }
