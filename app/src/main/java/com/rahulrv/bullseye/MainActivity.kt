@@ -11,9 +11,11 @@ import androidx.navigation.compose.rememberNavController
 import com.rahulrv.bullseye.screens.AboutScreen
 import com.rahulrv.bullseye.screens.GameScreen
 import com.rahulrv.bullseye.ui.theme.BullseyeTheme
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContent {
             BullseyeTheme {
